@@ -54,7 +54,7 @@ exports.register = async (req, res, next) => {
                 return false;
             }
             return true;
-        }
+        };
         
 
         if (User.countDocuments() === 0) {
@@ -87,7 +87,7 @@ exports.register = async (req, res, next) => {
                     if (user) {
                         return res.status(200).json({
                             success: false,
-                            error: 'Email already exists'
+                            error: ['Email already exists']
                         });
                     }else {
                         const newUser = User.create({
@@ -129,36 +129,62 @@ exports.signin = async (req, res, next) => {
         const email = req.body.email;
         const password = req.body.password;
         const sessionToken = jwt.sign({email: email}, process.env.SECRET, {expiresIn: '24h'});
-        const user = User.findOne({email: email}, (err, user) => {
-            const matches = bcrypt.compareSync(password, user.password);
-            if (err){
-                console.log(err.red);
-                return res.status(400).json({
-                    success: false,
-                    error: err
-                });
+        const valid = () => {
+            errors = [];
+            try {
+                if (email.length === 0 || email === undefined || email === null){
+                    errors.push('Email is required');
+                }
+            }catch{
+                errors.push('Email is required');
             }
-            if (matches && !user.isConfirmed) {
-                return res.status(400).json({
-                    success: false,
-                    error: 'Account not confirmed'
-                });
+            try {
+                if (req.body.password.length === 0 || req.body.password === undefined || req.body.password === null){
+                    errors.push('Password is required');
+                }
+            }catch{
+                errors.push('Password is required');
             }
-            if (matches) {
-                user.sessionToken = sessionToken;
-                user.save();
-                return res.status(200).json({
-                    success: true,
-                    message: 'Signin successful',
-                    sessionToken: sessionToken
-                });
-            }else{
-                return res.status(400).json({
-                    success: false,
-                    error: 'Invalid email or password'
-                });
+            if (errors.length > 0) {
+                return false;
             }
-        });
+            return true;
+        };
+        if (valid()) {
+            
+            User.findOne({email: email}, (err, user) => {
+                if (err){
+                    console.log(err.red);
+                    return res.status(200).json({
+                        success: false,
+                        error: err
+                    });
+                }
+                if (user) {
+                    const matches = bcrypt.compareSync(password, user.password);
+                    if (matches && !user.isConfirmed) {
+                        return res.status(200).json({
+                            success: false,
+                            error: 'Please confirm your account through your email'
+                        });
+                    }
+                    if (matches) {
+                        user.sessionToken = sessionToken;
+                        user.save();
+                        return res.status(200).json({
+                            success: true,
+                            message: 'Signin successful',
+                            sessionToken: sessionToken
+                        });
+                    }else{
+                        return res.status(400).json({
+                            success: false,
+                            error: 'Invalid email or password'
+                        });
+                    }
+                }
+            });
+        }
     }catch(err){
         console.log(err).red;
         return res.status(400).json({
@@ -178,10 +204,7 @@ exports.confirm = async (req, res, next) => {
     if (user) {
         user.isConfirmed = true;
         await user.save();
-        return res.status(200).json({
-            success: true,
-            message: 'Account confirmed'
-        });
+        return res.status(200).send("<h1>Welcome, " + user.firstName+' '+user.lastName+' , your account has been confirmed<h1><a href="http://localhost:3000/login">Sign in</a>');
     }else{
         return res.status(400).json({
             success: false,
