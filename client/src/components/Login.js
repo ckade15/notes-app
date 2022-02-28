@@ -23,19 +23,8 @@ function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const loginRoute = "http://localhost:5001/api/signin";
-
-        const options = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-            },
-            body: JSON.stringify({
-                email: state.email,
-                password: state.password
-            })
-        }
-        const response = await axios.post(loginRoute, options);
+        
+        const response = await axios.post(loginRoute, {email: state.email, password: state.password});
         const data = await response.json();
         console.log(response);
         console.log(data);

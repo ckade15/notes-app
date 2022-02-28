@@ -73,7 +73,12 @@ const Register = (props) => {
                 password: state.password
             })
         }
-        const response = await fetch(registerRoute, options);
+        const response = await axios.post(registerRoute, {
+            firstName: state.firstName,
+            lastName: state.lastName,
+            email: state.email,
+            password: state.password
+        });
         const data = await response.json();
         //console.log(data.error);
         if (data.error) {
