@@ -44,7 +44,7 @@ const Register = (props) => {
 
     const handleChange = (e) => {
         const value = e.target.value;
-        console.log(state)
+        console.log(state);
         setState({
             ...state,
             [e.target.name]: value
@@ -80,18 +80,36 @@ const Register = (props) => {
             email: state.email,
             password: state.password
         });
-        const data = await response.json();
-        if (response.data.error) {
+        const err = await response.data.error;
+        if (err.length > 0) {
+            console.log(err)
             setState({
                 ...state,
-                errors: data.error
+                errors: err,
+                registered: false
+            });
+        }else if (response.data.success.length >0) {
+            console.log(response.data.success);
+            setState({
+                ...state,
+                registered: true
+            });
+        }
+        //console.log(err);
+        //const data = await response.json();
+        /*if (data.error) {
+            console.log(data.error);
+            setState({
+                ...state,
+                errors: err
             });
         }else if (data.success) {
+
             setState({
                 errors: [],
                 registered: true
             });
-        }
+        }*/
     };
     const grPf = <div value={false} name="p" onClick={handlePass} ><GrFormViewHide size={40}></GrFormViewHide></div>;
     const grPt = <div value={true} name="c" onClick={handlePass} ><GrFormView size={40}></GrFormView></div>;
