@@ -3,7 +3,7 @@ import { UserContext } from "../context/UserContext";
 
 const Nav = (props) => {
     const name = useContext(UserContext);
-    console.log(name['firstName']);
+    console.log(name);
 
     return (
         <nav className="w-full flex justify-end p-4 bg-blue-700 font-mono">

@@ -33,37 +33,6 @@ export const signIn = async (email, password) => {
     return response;
 };
 
-export const actionReducer = (state, action) => {
-    switch(action.type) {
-        case "SET_FIRST":
-            return {
-                ...state,
-                firstName: action.payload
-
-            }
-        case "SET_LAST":
-            return {
-                ...state,
-                lastName: action.payload
-            }
-        case "SET_EMAIL":
-            return {
-                ...state,
-                email: action.payload
-            }
-        case "SET_TOKEN": 
-            return {
-                ...state,
-                sessionToken: action.payload
-            }
-        case "SET_SIGNED_IN":
-            return {
-                ...state,
-                signedIn: action.payload
-            }
-    }
-}
-
 
 
 export default validateClient;
