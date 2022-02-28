@@ -13,6 +13,7 @@ function Login() {
 
     const handleChange = (e) => {
         const value = e.target.value;
+        
         setState({
             ...state,
             [e.target.name]: value
@@ -23,11 +24,13 @@ function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const loginRoute = "http://localhost:5001/api/signin";
-        
-        const response = await axios.post(loginRoute, {email: state.email, password: state.password});
+        //console.log(state.email, state.password);
+        const response = await axios.post(loginRoute, {
+            email: state.email,
+            password: state.password
+        });
         const data = await response.json();
-        console.log(response);
-        console.log(data);
+
         if (data.error) {
             setState({
                 ...state,
@@ -48,7 +51,7 @@ function Login() {
                 <div className="w-full min-h-screen bg-gray-200">
                     <Nav />
                     <h1 className="text-center text-2xl font-mono mt-4 text-blue-800 font-bold">Login</h1>
-                    <form className="flex flex-col w-2/3 ml-auto mr-auto text-xl text-gray-700 bg-blue-200 p-20 border-2 border-blue-800 mt-4" onSubmit={handleSubmit}>
+                    <form className="flex flex-col w-2/3 ml-auto mr-auto text-xl text-gray-700 bg-blue-200 p-20 border-2 border-blue-800 mt-4" onSubmit={(e) => {handleSubmit(e)}}>
                             <div className="flex flex-col w-2/3 ml-auto mr-auto">
                                 <label className="text-gray-700 font-mono text-xl">Email:</label>
                                 <input type="text" name="email" className="border-2 border-red-200 p-2 mt-2 w-full" onChange={handleChange}/>

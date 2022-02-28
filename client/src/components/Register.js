@@ -44,15 +44,15 @@ const Register = (props) => {
 
     const handleChange = (e) => {
         const value = e.target.value;
+        console.log(state)
         setState({
             ...state,
             [e.target.name]: value
         });
-
     };
 
     const validatePassword = () => {
-        if (state.password !== state.confirmPassword && state.password.length > 4 && state.confirmPassword.length > 4) {
+        if (state.password !== state.confirmPassword && state.password.length > 1 && state.confirmPassword.length > 1) {
             return "Passwords do not match";
         }
     }
@@ -73,6 +73,7 @@ const Register = (props) => {
                 password: state.password
             })
         }
+        
         const response = await axios.post(registerRoute, {
             firstName: state.firstName,
             lastName: state.lastName,
@@ -80,8 +81,7 @@ const Register = (props) => {
             password: state.password
         });
         const data = await response.json();
-        //console.log(data.error);
-        if (data.error) {
+        if (response.data.error) {
             setState({
                 ...state,
                 errors: data.error
