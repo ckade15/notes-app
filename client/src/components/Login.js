@@ -2,6 +2,7 @@ import axios from "axios";
 import {useState} from "react";
 import { Navigate } from "react-router-dom";
 import Nav from "./Nav";
+import { signIn } from "../utils/utils";
 
 function Login() {
     const [state, setState] = useState({
@@ -23,24 +24,24 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const loginRoute = "http://localhost:5001/api/signin";
-        //console.log(state.email, state.password);
-        const response = await axios.post(loginRoute, {
-            email: state.email,
-            password: state.password
-        });
-        const data = await response.json();
+        const response = await signIn(state.email, state.password);
 
-        if (data.error) {
+        const err = await response.data.error;
+        const success = await response.data.success;
+        
+        if (success) {
             setState({
                 ...state,
-                error: data.error
-            });
-        }else if (data.success) {
-            setState({
-                ...state,
-                error: "",
                 signedIn: true
+            });
+            Navigate("/");
+        }
+        
+        if (err.length > 0) {
+            setState({
+                ...state,
+                error: err,
+                signedIn: false
             });
         }
     };

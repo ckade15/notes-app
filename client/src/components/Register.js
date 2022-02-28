@@ -44,7 +44,7 @@ const Register = (props) => {
 
     const handleChange = (e) => {
         const value = e.target.value;
-        console.log(state);
+        //console.log(state);
         setState({
             ...state,
             [e.target.name]: value

@@ -177,11 +177,17 @@ exports.signin = async (req, res, next) => {
                             sessionToken: sessionToken
                         });
                     }else{
-                        return res.status(400).json({
+                        return res.status(200).json({
                             success: false,
                             error: 'Invalid email or password'
                         });
                     }
+                }
+                if (!user){
+                    return res.status(200).json({
+                        success: false,
+                        error: 'Invalid email or password'
+                    });
                 }
             });
         }
