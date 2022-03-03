@@ -28,5 +28,9 @@ router
 router
     .route('/checkToken')
     .post(controller.checkToken);
+router
+    .route('/updatenote')
+    .post(controller.updateNote)
+    .delete(controller.deleteNote);
 
 module.exports = router;

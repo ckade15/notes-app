@@ -79,7 +79,7 @@ exports.register = async (req, res, next) => {
                 User.findOne({email: email}, (err, user) => {
                     if (err){
                         console.log(err.red);
-                        return res.status(400).json({
+                        return res.status(200).json({
                             success: false,
                             error: err
                         });
@@ -196,7 +196,7 @@ exports.signin = async (req, res, next) => {
         }
     }catch(err){
         console.log(err).red;
-        return res.status(400).json({
+        return res.status(200).json({
             success: false,
             error: err
         });
@@ -215,7 +215,7 @@ exports.confirm = async (req, res, next) => {
         await user.save();
         return res.status(200).send("<h1>Welcome, " + user.firstName+' '+user.lastName+' , your account has been confirmed<h1><a href="http://localhost:3000/login">Sign in</a>');
     }else{
-        return res.status(400).json({
+        return res.status(200).json({
             success: false,
             message: 'No user found'
         });
@@ -319,6 +319,194 @@ exports.deleteNote = async (req, res, next) => {
         return res.status(200).json({
             success: false,
             message: 'Invalid email or session token. Note not deleted'
+        });
+    }
+};
+
+
+// @route Update api/updatenote
+// @desc Updates note
+// @params email, sessionToken, noteId, title, content
+// @access Private
+exports.updateNote = async (req, res, next) => {
+    const email = await req.body.email;
+    const sessionToken = req.body.sessionToken;
+    const noteId = req.body.noteId;
+    const title = req.body.title;
+    const content = req.body.content;
+    const user = await User.findOne({email: email, sessionToken: sessionToken});
+
+    const errors = [];
+
+    if (noteId === '' || noteId === undefined || noteId === null) {
+        errors.push('Note id is required');
+    }
+    if (email === '' || email === undefined || email === null) {
+        errors.push('Email is required');
+    }
+    if (sessionToken === '' || sessionToken === undefined || sessionToken === null) {
+        errors.push('Session token is required');
+    }
+    if (user && sessionToken) {
+        if ((title === '' || title === undefined || title === null) || (content === '' || title === undefined || title === null) ) {
+            errors.push('Title and content are required');
+            return res.status(200).json({
+                success: false,
+                message: 'Title or content are required'
+            });
+        }
+        if (title === '' || title === undefined || title === null){
+            await User.findOneAndUpdate(
+                {"_id": user._id, "notes._id": noteId},
+                {$set: {"notes.$.content": content}},
+                function(err, note){
+                    if (err) {
+                        return res.status(200).json({
+                            success: false,
+                            error: err
+                        });
+                    }
+                    if (note){
+                        return res.status(200).json({
+                            success: true,
+                            message: 'Note updated successfully',
+                            note: {
+                                title: title,
+                                content: content
+                            }
+                        });
+                    }
+                }
+            );
+            return res.status(200).json({
+                success: true,
+                message: 'Note updated successfully',
+            });
+        };
+
+        if (content === '' || content === undefined || content === null){
+            await User.findOneAndUpdate(
+                {"_id": user._id, "notes._id": noteId},
+                {$set: {"notes.$.title": title}},
+                function(err, note){
+                    if (err) {
+                        return res.status(200).json({
+                            success: false,
+                            error: err
+                        });
+                    }
+                    if (note){
+                        return res.status(200).json({
+                            success: true,
+                            message: 'Note updated successfully',
+                            note: {
+                                title: title,
+                                content: content
+                            }
+                        });
+                    }
+                }
+            );
+            return res.status(200).json({
+                success: true,
+                message: 'Note updated successfully',
+            });
+        };
+
+        await User.findOneAndUpdate(
+            {"_id": user._id, "notes._id": noteId},
+            {$set: 
+                {
+                    "notes.$.title": title,
+                    "notes.$.content": content
+                }
+            },
+            function(err, note){
+                if (err) {
+                    return res.status(200).json({
+                        success: false,
+                        error: err
+                    });
+                }
+                if (note){
+                    return res.status(200).json({
+                        success: true,
+                        message: 'Note updated successfully',
+                        note: {
+                            title: title,
+                            content: content
+                        }
+                    });
+                }
+            }
+        );
+        return res.status(200).json({
+            success: true,
+            message: 'Note updated successfully',
+        });
+    }else{
+        return res.status(200).json({
+            success: false,
+            error: errors
+        });
+    };
+};
+
+// @route Delete api/updatenote
+// @desc Deletes note
+// @params email, sessionToken, noteId
+// @access Private
+exports.deleteNote = async (req, res, next) => {
+    const email = await req.body.email;
+    const sessionToken = req.body.sessionToken;
+    const noteId = req.body.noteId;
+    const user = await User.findOne({email: email, sessionToken: sessionToken});
+
+    let errors = [];
+
+    if (noteId === '' || noteId === undefined || noteId === null) {
+        errors.push('Note id is required');
+    }
+    if (email === '' || email === undefined || email === null) {
+        errors.push('Email is required');
+    }
+    if (sessionToken === '' || sessionToken === undefined || sessionToken === null) {
+        errors.push('Session token is required');
+    }
+    if (errors.length > 0) {
+        return res.status(200).json({
+            success: false,
+            message: errors
+        });
+    }
+    if (user && sessionToken) {
+        await User.findOneAndUpdate(
+            {"_id": user._id, "notes._id": noteId},
+            {$pull: {"notes": {"_id": noteId}}},
+            function(err, note){
+                if (err) {
+                    return res.status(200).json({
+                        success: false,
+                        error: err
+                    });
+                }
+                if (note){
+                    return res.status(200).json({
+                        success: true,
+                        message: 'Note deleted successfully',
+                    });
+                }
+            }
+        );
+        return res.status(200).json({
+            success: true,
+            message: 'Note deleted successfully',
+        });
+    }else{
+        return res.status(200).json({
+            success: false,
+            message: 'Invalid email or session token. Note not deleted',
+            error: errors
         });
     }
 };
