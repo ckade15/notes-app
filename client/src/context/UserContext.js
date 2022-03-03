@@ -8,50 +8,17 @@ const initialState = {
     email: "",
     sessionToken: "",
     signedIn: false,
+    notes: []
 }
 
 
 export const UserProvider = ({children}) => {
     const [state, setState] = useState(initialState);
-    const setFirstName = (firstName) => {
-        setState({
-            ...state,
-            firstName: firstName
-        });
-    };
-    const setLastName = (lastName) => {
-        setState({
-            ...state,
-            lastName: lastName
-        });
-    };
-    const setEmail = (email) => {
-        setState({
-            ...state,
-            email: email
-        });
-    };
-    const setSessionToken = (sessionToken) => {
-        setState({
-            ...state,
-            sessionToken: sessionToken
-        })
-    }
+
+
 
     return (
-        <UserContext.Provider value={
-            {
-                firstName: "Chris",
-                lastName: "",
-                email: "",
-                sessionToken: "",
-                signedIn: false,
-                setFirstName,
-                setLastName,
-                setEmail,
-                setSessionToken
-            }
-        }>
+        <UserContext.Provider value={[state, setState]}>
             {children}
         </UserContext.Provider>
     )

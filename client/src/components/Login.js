@@ -3,8 +3,12 @@ import {useState} from "react";
 import { Navigate } from "react-router-dom";
 import Nav from "./Nav";
 import { signIn } from "../utils/utils";
+import {UserContext} from "../context/UserContext";
+import { useContext } from "react";
 
 function Login() {
+    const [st, setSt] = useContext(UserContext);
+
     const [state, setState] = useState({
         email: "",
         password: "",
@@ -30,6 +34,17 @@ function Login() {
         const success = await response.data.success;
         
         if (success) {
+            localStorage.setItem("sessionToken", response.data.sessionToken);
+            
+            setSt({
+                ...st,
+                signedIn: true,
+                sessionToken: response.data.sessionToken,
+                firstName: response.data.firstName,
+                lastName: response.data.lastName,
+                email: response.data.email
+
+            });
             setState({
                 ...state,
                 signedIn: true

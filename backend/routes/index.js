@@ -25,5 +25,8 @@ router
 router
     .route('/clearnotes')
     .delete(controller.clearNotes);
+router
+    .route('/checkToken')
+    .post(controller.checkToken);
 
 module.exports = router;

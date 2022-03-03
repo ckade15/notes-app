@@ -5,11 +5,16 @@ import {GrFormViewHide, GrFormView} from 'react-icons/gr';
 import { Navigate } from "react-router-dom";
 import RegisterMessage from "./RegisterMessage";
 import validateClient from "../utils/utils";
+import { UserContext} from "../context/UserContext";
+import { useContext } from "react";
 
 const Register = (props) => {
     const localhost = "http://localhost:5001/api/register";
-    const lenovohost = "http://192.168.1.115:5001/api/register";
+    //const lenovohost = "http://192.168.1.115:5001/api/register";
     const registerRoute = localhost;
+    const user = useContext(UserContext);
+
+    console.log(user);
 
     const [state, setState] = useState({
         firstName: "",
@@ -23,6 +28,7 @@ const Register = (props) => {
         registered: false,
         valid: false
     });
+    
 
     useEffect(() => {
         /*try{

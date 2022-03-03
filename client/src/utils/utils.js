@@ -33,6 +33,25 @@ export const signIn = async (email, password) => {
     return response;
 };
 
+export const checkToken = async (sessionToken) => {
+    const checkRoute = "http://localhost:5001/api/checkToken";
+    const response = await axios.post(checkRoute, {
+        sessionToken: sessionToken
+    });
+    return response;
+};
+
+export const addNote = async (sessionToken, note) => {
+    const addRoute = "http://localhost:5001/api/note";
+    const response = await axios.post(addRoute, {
+        sessionToken: sessionToken,
+        email: note.email,
+        title: note.title,
+        content: note.content
+    });
+    return response;
+}
+
 
 
 export default validateClient;

@@ -174,6 +174,9 @@ exports.signin = async (req, res, next) => {
                         return res.status(200).json({
                             success: true,
                             message: 'Signin successful',
+                            firstName: user.firstName,
+                            lastName: user.lastName,
+                            email: user.email,
                             sessionToken: sessionToken
                         });
                     }else{
@@ -229,28 +232,27 @@ exports.addNote = async (req, res, next) => {
     const title = req.body.title;
     const content = req.body.content;
     const user = await User.findOne({email: email, sessionToken: sessionToken});
+    const errors = [];
     if (title === '' || title === undefined || title === null) {
-        return res.status(400).json({
-            success: false,
-            message: 'Title is required'
-        });
+        errors.push('Title is required');
+
     }
     if (content === '' || content === undefined || content === null) {
-        return res.status(400).json({
-            success: false,
-            message: 'Content is required'
-        });
+        errors.push('Content is required');
+
     }
     if (email === '' || email === undefined || email === null) {
-        return res.status(400).json({
-            success: false,
-            message: 'Email is required'
-        });
+        errors.push('Email is required');
+
     }
     if (sessionToken === '' || sessionToken === undefined || sessionToken === null) {
-        return res.status(400).json({
+        errors.push('SessionToken is required');
+
+    }
+    if (errors.length > 0){
+        return res.status(200).json({
             success: false,
-            message: 'Session token is required'
+            error: errors,
         });
     }
     if (user && sessionToken) {
@@ -259,9 +261,13 @@ exports.addNote = async (req, res, next) => {
         return res.status(200).json({
             success: true,
             message: 'Note added successfully',
+            note: {
+                title: title,
+                content: content
+            }
         });
     }else{
-        return res.status(400).json({
+        return res.status(200).json({
             success: false,
             message: 'Invalid email or session token'
         });
@@ -278,19 +284,19 @@ exports.deleteNote = async (req, res, next) => {
     const noteId = req.body.noteId;
     const user = await User.findOne({email: email, sessionToken: sessionToken});
     if (noteId === '' || noteId === undefined || noteId === null) {
-        return res.status(400).json({
+        return res.status(200).json({
             success: false,
             message: 'Note id is required'
         });
     }
     if (email === '' || email === undefined || email === null) {
-        return res.status(400).json({
+        return res.status(200).json({
             success: false,
             message: 'Email is required'
         });
     }
     if (sessionToken === '' || sessionToken === undefined || sessionToken === null) {
-        return res.status(400).json({
+        return res.status(200).json({
             success: false,
             message: 'Session token is required'
         });
@@ -310,7 +316,7 @@ exports.deleteNote = async (req, res, next) => {
             message: 'Note deleted successfully',
         });
     }else{
-        return res.status(400).json({
+        return res.status(200).json({
             success: false,
             message: 'Invalid email or session token. Note not deleted'
         });
@@ -327,13 +333,13 @@ exports.clearNotes = async (req, res, next) => {
     const user = await User.findOne({email: email, sessionToken: sessionToken});
 
     if (email === '' || email === undefined || email === null) {
-        return res.status(400).json({
+        return res.status(200).json({
             success: false,
             message: 'Email is required'
         });
     }
     if (sessionToken === '' || sessionToken === undefined || sessionToken === null) {
-        return res.status(400).json({
+        return res.status(200).json({
             success: false,
             message: 'Session token is required'
         });
@@ -346,9 +352,35 @@ exports.clearNotes = async (req, res, next) => {
             message: 'Notes cleared successfully',
         });
     }else{
-        return res.status(400).json({
+        return res.status(200).json({
             success: false,
             message: 'Invalid email or session token. Notes not cleared.'
         });
     }
 };
+
+// @route Post api/checkToken
+// @desc Checks if the session token is valid
+// @params sessionToken
+// @access Private
+
+exports.checkToken = async (req, res, next) => {
+    const sessionToken = req.body.sessionToken;
+    const user = await User.findOne({sessionToken: sessionToken});
+    if (user) {
+        return res.status(200).json({
+            success: true,
+            message: 'Session token is valid',
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            sessionToken: user.sessionToken,
+            notes: user.notes
+        });
+    }else{
+        return res.status(200).json({
+            success: false,
+            message: 'Session token is invalid'
+        });
+    }
+}
