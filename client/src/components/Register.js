@@ -104,9 +104,9 @@ const Register = (props) => {
     const grPf = state.hideP ? <button id="p" onClick={e => handlePass(e)} ><GrFormViewHide id="p" onClick={e => handlePass(e)} size={40}></GrFormViewHide></button> : <button id="p" onClick={e => handlePass(e)} ><GrFormView id="p" size={40}></GrFormView></button>;
     const grPt = state.hideC ? <button id="c" onClick={e => handlePass(e)} ><GrFormViewHide id="c" onClick={e => handlePass(e)} size={40}></GrFormViewHide></button> : <button id="c" onClick={e => handlePass(e)} ><GrFormView id="c" size={40}></GrFormView></button>;
 
-    {state.registered ? <Navigate to="/login" /> : <></>}
+    
     if (state.registered) {
-        return window.location.href = '/login';
+        return window.location.href = '/register/success';
     }else {
         return (
         <div className="w-full min-h-screen bg-gray-300 ">

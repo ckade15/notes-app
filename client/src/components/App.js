@@ -34,7 +34,8 @@ function App() {
                 firstName: response.data.firstName,
                 lastName: response.data.lastName,
                 email: response.data.email,
-                notes: response.data.notes
+                notes: response.data.notes,
+                foot: false
             });
         }else{
             setState({
@@ -84,13 +85,14 @@ function App() {
                 <h3 className="text-center mt-10 text-2xl font-mono text-blue-900">{state.firstName}'s Notes</h3>
                 <AddNote />
                 {state.notes.length > 0 ? state.notes.map((note, index) => {
+                    setState({foot: true});
                     index++;
                     return <Note noteId={note._id} num={index} title={note.title} content={note.content} />
-                }) : <p className="text-blue-800 font-mono text-center mt-10 text-2xl">No notes to display</p>}
+                }) : <p className="text-blue-800 font-mono text-center mt-10 text-2x">No notes to display</p>}
 
             </div>
         }
-        <Footer />
+        {state.foot ? <Footer dis="fixed" /> : <Footer dis=""/>}
     </div>
   );
 }

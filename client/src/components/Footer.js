@@ -19,7 +19,7 @@ function Footer(props) {
       );
     }else{
         return (
-            <footer className="bottom-0 fixed w-full  bg-blue-700 p-10 flex justify-evenly text-xl">
+            <footer className={`bottom-0 ${props.dis} w-full  bg-blue-700 p-10 flex justify-evenly text-xl`}>
                 <div className="flex flex-col w-1/2 text-xl text-center">
                     <p className="text-xl text-white font-bold font-mono p-1 mt-2">&copy; Kade Web Solutions  {(new Date().getFullYear())}</p>
                     <p className="font-mono text-lg font-bold text-gray-200  mb-1">Made by Chris Kade</p>
