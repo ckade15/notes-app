@@ -1,5 +1,5 @@
 import React from "react";
-import linkedin from "../assets/linkedin.png";
+import linkedin from "../assets/linkedin-alt.svg";
 import twitter from "../assets/twitter.png";
 import github from "../assets/github.png";
 
@@ -21,8 +21,8 @@ function Footer(props) {
         return (
             <footer className="bottom-0 fixed w-full  bg-blue-700 p-10 flex justify-evenly text-xl">
                 <div className="flex flex-col w-1/2 text-xl text-center">
-                    <p className="text-xl text-blue-800 font-bold font-mono p-1 mt-2">&copy; Kade Web Solutions  {(new Date().getFullYear())}</p>
-                    <p className="font-mono text-lg font-bold  mb-1">Made by Chris Kade</p>
+                    <p className="text-xl text-white font-bold font-mono p-1 mt-2">&copy; Kade Web Solutions  {(new Date().getFullYear())}</p>
+                    <p className="font-mono text-lg font-bold text-gray-200  mb-1">Made by Chris Kade</p>
                 </div> 
                 <div className="flex place-content-evenly mt-1 w-1/3 ">
                     <a href="https://www.linkedin.com/in/christopher-kade-b9b2151a5/" className="soc-link text-blue-400 not-italic font-bold text-2xl rounded-full h-12 w-12 text-center leading-8"><img src={linkedin}/></a>
