@@ -13,6 +13,10 @@ const AddNote = (props) => {
         content: ""
     });
 
+    const reload = () => {
+        window.location.reload();
+    };
+
     const handleChange = (e) => {
         e.preventDefault();
         setNote({
@@ -30,11 +34,13 @@ const AddNote = (props) => {
         }
         addNote(localStorage.getItem("sessionToken"), nt).then(response => {
             console.log(response);
+            reload();
             if (response.data.success) {
                 setState({
                     ...state,
                     note: [...response.data.note]
                 });
+                
                 console.log("Note added");
             }else{
                 console.log(response.data.error)
@@ -48,7 +54,7 @@ const AddNote = (props) => {
             <p className="text-xl text-red-500 font-bold font-mono">Add a new note:</p>
             <input type="text" name="title" placeholder="Title" className="w-full p-2 border-2 border-blue-700 mt-4" onChange={handleChange} />
             <textarea name="content" placeholder="Content" className="w-full p-2 border-2 border-blue-700 mt-4" onChange={handleChange}/>
-            <button type="submit" name="addNote" value="Add note" className="ml-auto mr-auto mt-4 bg-blue-200 p-4 rounded-md w-1/3 hover:bg-green-200 hover:text-blue-900 text-lg font-bold font-mono" >Add note</button>
+            <button type="submit" name="addNote" value="Add note" className="ml-auto mr-auto mt-8 bg-blue-200 p-4 rounded-md w-1/3 hover:bg-green-200 hover:text-blue-900 text-lg font-bold font-mono" >Add note</button>
         </form>
     )
 }

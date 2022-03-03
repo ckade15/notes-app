@@ -14,7 +14,7 @@ const Register = (props) => {
     const registerRoute = localhost;
     const user = useContext(UserContext);
 
-    console.log(user);
+    
 
     const [state, setState] = useState({
         firstName: "",
@@ -41,9 +41,9 @@ const Register = (props) => {
     });
     const handlePass = (e) => {
         e.preventDefault();
-        if (e.target.name === "p") {
+        if (e.target.id === "p") {
             setState({ ...state, hideP: !state.hideP });
-        }else if (e.target.name === "c") {
+        }else if (e.target.id === "c") {
             setState({ ...state, hideC: !state.hideC });
         }
     }
@@ -85,42 +85,30 @@ const Register = (props) => {
             lastName: state.lastName,
             email: state.email,
             password: state.password
+        }).then(response => {
+            if (response.data.success) {
+                setState({
+                    ...state,
+                    registered: true,
+                    valid: true
+                });
+            }else{
+                setState({
+                    ...state,
+                    errors: response.data.error
+                });
+            }
         });
-        const err = await response.data.error;
-        if (err.length > 0) {
-            console.log(err)
-            setState({
-                ...state,
-                errors: err,
-                registered: false
-            });
-        }else if (response.data.success.length >0) {
-            console.log(response.data.success);
-            setState({
-                ...state,
-                registered: true
-            });
-        }
-        //console.log(err);
-        //const data = await response.json();
-        /*if (data.error) {
-            console.log(data.error);
-            setState({
-                ...state,
-                errors: err
-            });
-        }else if (data.success) {
 
-            setState({
-                errors: [],
-                registered: true
-            });
-        }*/
     };
-    const grPf = <div value={false} name="p" onClick={handlePass} ><GrFormViewHide size={40}></GrFormViewHide></div>;
-    const grPt = <div value={true} name="c" onClick={handlePass} ><GrFormView size={40}></GrFormView></div>;
+    const grPf = state.hideP ? <button id="p" onClick={e => handlePass(e)} ><GrFormViewHide id="p" onClick={e => handlePass(e)} size={40}></GrFormViewHide></button> : <button id="p" onClick={e => handlePass(e)} ><GrFormView id="p" size={40}></GrFormView></button>;
+    const grPt = state.hideC ? <button id="c" onClick={e => handlePass(e)} ><GrFormViewHide id="c" onClick={e => handlePass(e)} size={40}></GrFormViewHide></button> : <button id="c" onClick={e => handlePass(e)} ><GrFormView id="c" size={40}></GrFormView></button>;
 
-    return (
+    {state.registered ? <Navigate to="/login" /> : <></>}
+    if (state.registered) {
+        return window.location.href = '/login';
+    }else {
+        return (
         <div className="w-full min-h-screen bg-gray-300 ">
             {state.registered ? <Navigate to="/register/success" /> : 
 
@@ -149,13 +137,14 @@ const Register = (props) => {
                         </div>
                         <div className="flex justify-evenly place-items-center mt-8">
                             <label className="mt-4 w-1/5">Password:</label>
-                            <input type="password" name="password" value={state.password} onChange={handleChange} className="border-2 border-red-200 p-2 mt-2 w-1/2"/>  
-                            {state.hideP ? grPf : grPt}
+                            {state.hideP ? <input type="password" name="password" value={state.password} onChange={handleChange} className="border-2 border-red-200 p-2 mt-2 w-1/2"/>: <input type="text" name="password" value={state.password} onChange={handleChange} className="border-2 border-red-200 p-2 mt-2 w-1/2"/>}
+                            {grPf}
                         </div>
                         <div className="flex justify-evenly place-items-center mt-8">
                             <label className="mt-4 w-1/5">Re-enter Password:</label>
-                            <input id="confirmPassword" type="password" name="confirmPassword" value={state.confirmPassword} onChange={handleChange} className="border-2 border-red-200 p-2 mt-2 w-1/2"/>
-                            {state.hideC ? grPf : grPt}
+                            {state.hideC ? <input id="confirmPassword" type="password" name="confirmPassword" value={state.confirmPassword} onChange={handleChange} className="border-2 border-red-200 p-2 mt-2 w-1/2"/> : <input id="confirmPassword" type="text" name="confirmPassword" value={state.confirmPassword} onChange={handleChange} className="border-2 border-red-200 p-2 mt-2 w-1/2"/> }
+                           
+                            {grPt}
                         </div>
                         {!validatePassword() ? <></> : <p className="text-center mt-2 text-red-500 ">{"* "+validatePassword()}</p>}
                         <button className="mt-10 bg-blue-500 text-white p-4 rounded-lg w-1/3 ml-auto mr-auto hover:text-blue-500 hover:bg-white" type="submit" >Register Account</button>
@@ -165,7 +154,10 @@ const Register = (props) => {
                 </div>
             } 
         </div>
-    );
+
+        )
+    }
+
 }
 
 export default Register;
