@@ -5,6 +5,7 @@ import Nav from "./Nav";
 import { signIn } from "../utils/utils";
 import {UserContext} from "../context/UserContext";
 import { useContext } from "react";
+import Footer from "./Footer";
 
 function Login() {
     const [st, setSt] = useContext(UserContext);
@@ -77,6 +78,7 @@ function Login() {
                                 {state.error.length > 0 ? <p className="text-red-500 text-xl font-mono mt-8">* {state.error}</p> : <></>}
                             </div>
                     </form>
+                    <Footer />
                 </div>
             }
       </div>

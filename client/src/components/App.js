@@ -6,6 +6,7 @@ import axios from "axios";
 import { checkToken, addNote } from "../utils/utils";
 import Note from "./Note";
 import AddNote from "./AddNote";
+import Footer from "./Footer";
 
 function App() {
     const [state, setState] = useContext(UserContext);
@@ -76,7 +77,7 @@ function App() {
     }
 
   return (
-    <div className="bg-gray-200 w-full min-h-screen pb-20">
+    <div className="bg-gray-200 w-full min-h-screen ">
         <Nav />
         {!state.signedIn ? <div><p className="text-blue-800 font-mono text-center mt-10 text-2xl">Please sign in or register to manage your notes.</p></div> : 
             <div className="flex flex-col justify-center">
@@ -89,6 +90,7 @@ function App() {
 
             </div>
         }
+        <Footer />
     </div>
   );
 }
