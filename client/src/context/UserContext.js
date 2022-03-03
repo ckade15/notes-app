@@ -3,7 +3,7 @@ import { createContext, useState } from "react";
 export const UserContext = createContext();
 
 const initialState = {
-    firstName: "Chris",
+    firstName: "",
     lastName: "",
     email: "",
     sessionToken: "",

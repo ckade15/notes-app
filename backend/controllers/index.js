@@ -455,7 +455,7 @@ exports.updateNote = async (req, res, next) => {
 // @route Delete api/updatenote
 // @desc Deletes note
 // @params email, sessionToken, noteId
-// @access Private
+// @access Private 
 exports.deleteNote = async (req, res, next) => {
     const email = await req.body.email;
     const sessionToken = req.body.sessionToken;

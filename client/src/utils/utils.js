@@ -51,6 +51,26 @@ export const addNote = async (sessionToken, note) => {
     });
     return response;
 }
+export const updateNote = async (sessionToken, note) => {
+    const updateRoute = "http://localhost:5001/api/updatenote";
+    const response = await axios.post(updateRoute, {
+        "noteId": note.noteId,
+        "sessionToken": sessionToken,
+        "email": note.email,
+        "title": note.title,
+        "content": note.content
+    });
+    return response;
+}
+export const deleteNote = async (sessionToken, note) => {
+    const deleteRoute = "http://localhost:5001/api/updatenote";
+    const response = await axios.delete(deleteRoute, {data:{
+        "noteId": note.noteId,
+        "sessionToken": sessionToken,
+        "email": note.email,
+    }});
+    return response;
+}
 
 
 

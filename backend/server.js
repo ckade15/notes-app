@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const db = require('./models/User');
 const dotenv = require('dotenv');
+const cors = require('cors');
 const colors = require('colors');
 
 // DOTENV Config
@@ -12,6 +13,7 @@ dotenv.config({path: './.env'});
 // Express Config
 const app = express();
 app.use(express.json());
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from

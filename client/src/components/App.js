@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import { checkToken, addNote } from "../utils/utils";
 import Note from "./Note";
+import AddNote from "./AddNote";
 
 function App() {
     const [state, setState] = useContext(UserContext);
@@ -75,20 +76,15 @@ function App() {
     }
 
   return (
-    <div className="bg-gray-200 w-full min-h-screen">
+    <div className="bg-gray-200 w-full min-h-screen pb-20">
         <Nav />
         {!state.signedIn ? <div><p className="text-blue-800 font-mono text-center mt-10 text-2xl">Please sign in or register to manage your notes.</p></div> : 
             <div className="flex flex-col justify-center">
                 <h3 className="text-center mt-10 text-2xl font-mono text-blue-900">{state.firstName}'s Notes</h3>
-                <form className="w-2/3 ml-auto mr-auto p-4 flex justify-center flex-col " onSubmit={(e) => handleSubmit(e)}>
-                    <p className="text-xl text-red-500 font-bold font-mono">Add a new note:</p>
-                    <input type="text" name="title" placeholder="Title" className="w-full p-2 border-2 border-blue-700 mt-4" onChange={handleChange} />
-                    <textarea name="content" placeholder="Content" className="w-full p-2 border-2 border-blue-700 mt-4" onChange={handleChange}/>
-                    <input type="submit" name="addNote" value="Add note" className="ml-auto mr-auto mt-4 bg-blue-200 p-4 rounded-md " />
-                </form>
+                <AddNote />
                 {state.notes.map((note, index) => {
                     index++;
-                    return <Note key={note._id} num={index} title={note.title} content={note.content} />
+                    return <Note noteId={note._id} num={index} title={note.title} content={note.content} />
                 })}
 
             </div>
