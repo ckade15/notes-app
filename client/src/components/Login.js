@@ -33,6 +33,8 @@ function Login() {
 
         const err = await response.data.error;
         const success = await response.data.success;
+        console.log(response, st);
+        
         
         if (success) {
             localStorage.setItem("sessionToken", response.data.sessionToken);
@@ -78,7 +80,7 @@ function Login() {
                                 {state.error.length > 0 ? <p className="text-red-500 text-xl font-mono mt-8">* {state.error}</p> : <></>}
                             </div>
                     </form>
-                    <Footer />
+                    {state.foot ? <Footer dis="fixed" /> : <Footer dis=""/>}
                 </div>
             }
       </div>
