@@ -81,8 +81,8 @@ function App() {
   return (
     <div className="bg-gray-200 w-full min-h-screen ">
         <Nav />
-        {!state.signedIn ? <div><p className="text-blue-800 font-mono text-center mt-10 text-2xl">Please sign in or register to manage your notes.</p></div> : 
-            <div className="flex flex-col justify-center">
+        {!state.signedIn ? <div className="min-h-screen"><p className="text-blue-800 font-mono text-center mt-20 text-3xl font-bold ">Please sign in or register to manage your notes.</p></div> : 
+            <div className="flex flex-col justify-center min-h-screen">
                 <h3 className="text-center mt-10 text-2xl font-mono text-blue-900">{state.firstName}'s Notes</h3>
                 <AddNote />
                 {state.notes.length > 0 ? state.notes.map((note, index) => {
