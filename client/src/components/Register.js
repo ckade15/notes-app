@@ -7,6 +7,7 @@ import RegisterMessage from "./RegisterMessage";
 import validateClient from "../utils/utils";
 import { UserContext} from "../context/UserContext";
 import { useContext } from "react";
+import Footer from "./Footer";
 
 const Register = (props) => {
     const localhost = "http://localhost:5001/api/register";
@@ -112,7 +113,7 @@ const Register = (props) => {
         <div className="w-full min-h-screen bg-gray-300 ">
             {state.registered ? <Navigate to="/register/success" /> : 
 
-                <div className="font-mono w-full min-h-screen bg-gray-300 pb-10">
+                <div className="font-mono w-full min-h-screen bg-gray-300 ">
                     <Nav />
                     <h1 className="text-center text-2xl p-6 text-blue-800 font-bold">Create Account</h1>
                     <form className="flex flex-col w-2/3 ml-auto mr-auto text-xl text-gray-700 bg-blue-200 p-20 border-2 border-blue-800 " onSubmit={(e) => {
@@ -150,6 +151,7 @@ const Register = (props) => {
                         <button className="mt-10 bg-blue-500 text-white p-4 rounded-lg w-1/3 ml-auto mr-auto hover:text-blue-500 hover:bg-white" type="submit" >Register Account</button>
                         {state.errors.length > 0 && <div className="mt-4 text-blue-700 text-center">{state.errors.map(error => <p className="mt-2">{ "* " + error}</p>)}</div>}
                     </form>
+                    <Footer />
 
                 </div>
             } 

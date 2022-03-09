@@ -41,6 +41,7 @@ function App() {
             setState({
                 ...state,
                 signedIn: false,
+                foot: true,
             });
         }
 
