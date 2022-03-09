@@ -556,40 +556,26 @@ exports.checkToken = async (req, res, next) => {
     const sessionToken = req.body.sessionToken;
     const user = await User.findOne({sessionToken: sessionToken});
     if (user) {
-        jwt.verify(sessionToken, user.sessionToken, (err, user) => {
+        jwt.verify(sessionToken, user.sessionToken, (valid, err) => {
             if (err) {
                 return res.status(200).json({
                     success: false,
                     message: 'Invalid session token'
                 });
             }
-            return res.status(200).json({
-                success: true,
-                message: 'Valid session token',
-                firstName: user.firstName,
-                lastName: user.lastName,
-                email: user.email,
-                sessionToken: user.sessionToken,
-                notes: user.notes
-            });
-        })
-        if (Date.now() >= user * 1000) {
-            return res.status(200).json({
-                success: false,
-                message: 'Session token expired'
-            });
-        }
-        else {
-            return res.status(200).json({
-                success: true,
-                message: 'Session token is valid',
-                firstName: user.firstName,
-                lastName: user.lastName,
-                email: user.email,
-                sessionToken: user.sessionToken,
-                notes: user.notes
-            });
-        }
+            if (valid){
+                return res.status(200).json({
+                    success: true,
+                    message: 'Valid session token',
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    email: user.email,
+                    sessionToken: user.sessionToken,
+                    notes: user.notes
+                });
+            }
+        });
+
     }else{
         return res.status(200).json({
             success: false,
