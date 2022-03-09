@@ -45,38 +45,9 @@ function App() {
             });
         }
 
-    }
-
-    const handleChange = (e) => {
-        e.preventDefault();
-        setNote({
-            ...note,
-            [e.target.name]: e.target.value
-        });
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const nt = {
-            title: note.title,
-            content: note.content,
-            email: state.email
-        }
-        addNote(localStorage.getItem("sessionToken"), nt).then(response => {
-            console.log(response);
-            if (response.data.success) {
-                setState({
-                    ...state,
-                    note: [...response.data.note]
-                });
-                console.log("Note added");
-            }else{
-                console.log(response.data.error)
-            }
-        });
 
-        //console.log(note.success);
-    }
 
   return (
     <div className="bg-gray-200 w-full min-h-screen ">

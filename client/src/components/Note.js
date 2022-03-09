@@ -71,10 +71,10 @@ const Note = (props) => {
         return (
             <div className="bg-blue-200 w-1/2 ml-auto mr-auto p-10 border-2 border-purple-800 flex place-items-center flex-wrap justify-center mt-20 ">
                 <h1 className="text-blue-900 font-mono text-3xl ">{props.num}.</h1>
-                <input name="title" value={state.title} onChange={(e) => handleChange(e)} />
-                <input name="content" className="text-lg text-green-700 ml-10" value={state.content} onChange={handleChange}/>
+                <input className="ml-3 p-1" name="title" value={state.title} onChange={(e) => handleChange(e)} />
+                <textarea name="content" className="text-lg text-green-700 ml-10 p-1" value={state.content} onChange={handleChange}/>
                 <button className="text-blue-700 font-mono text-lg bg-green-200 p-3 rounded-md ml-6 hover:bg-blue-500 font-bold hover:text-white mt-10" onClick={(e) => {update(e)}}>Update note</button>
-                <button className="text-blue-700 font-mono text-lg bg-green-200 p-3 rounded-md ml-6 hover:bg-blue-500 font-bold hover:text-white mt-10" onClick={(e) => {handleClick(e)}}>Exit update mode</button>
+                <button className="text-blue-700 font-mono text-lg bg-gray-300 p-3 rounded-md ml-6 hover:bg-blue-500 font-bold hover:text-white mt-10" onClick={(e) => {handleClick(e)}}>Exit update mode</button>
                 <button className="text-blue-700 font-mono text-lg bg-red-200 p-3 rounded-md ml-6 hover:bg-red-600 hover:text-white font-bold mt-10" onClick={(e) => {del(e)}}>Delete note</button>
             </div>
         )
@@ -82,7 +82,7 @@ const Note = (props) => {
         return (
             <div className="bg-blue-200 w-1/2 ml-auto mr-auto p-10 border-2 border-purple-800 flex place-items-center flex-wrap justify-center flex-col gap-6 mt-20">
                 <h1 className="text-blue-900 font-mono text-3xl ">{props.num}. {props.title}</h1>
-                <p className="text-2xl text-black ">{props.content}</p>
+                <p className="text-2xl text-black w-2/3 text-center">{props.content}</p>
                 <button className="text-blue-700 font-mono text-lg bg-green-200 p-3 rounded-md hover:bg-blue-500 font-bold hover:text-white" onClick={(e) => {handleClick(e)}}>Enter update mode</button>
                 <button className="text-blue-700 font-mono text-lg bg-red-200 p-3 rounded-md hover:bg-red-600 hover:text-white font-bold" onClick={(e) => {del(e)}}>Delete note</button>
             </div>
